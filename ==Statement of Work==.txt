@@ -1,0 +1,54 @@
+==Statement of Work==
+project_name
+submission_date 
+start_date
+client_name
+prepared_by
+prepared_by_position
+noted_by
+noted_by_position
+
+==Introduction==
+
+GENERAL SPECIFICATION
+
+specifications
+array 
+	PROJECT OBJECTIVES
+	- objectives
+
+	GEOGRAPHICAL SCOPE
+        - countries
+
+REQUIREMENTS
+table 
+	PROJECT FEATURES
+	 * platform
+ 	 * features
+           - description 
+           - objectives
+		   - dev_story_points
+		   - test_story_points
+           - requirements
+              - feature name
+              - feature-list
+
+TEAM WORKDAYS and COSTING
+table
+	project_team_components
+	no_of_resources
+	working_days
+	amount
+
+TIMELINES
+from PROJECT FEATURES each feature will have
+	- dev_story_points
+	- test_story_points 
+
+
+
+
+
+
+   
+
