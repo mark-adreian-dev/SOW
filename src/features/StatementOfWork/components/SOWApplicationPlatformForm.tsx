@@ -1,6 +1,6 @@
 import type { StatementOfWorkRequest } from "@/core/domain/schema/statement-of-work.schema";
 import { Button } from "@/core/presentation/components/base/ui/button";
-import { PlusIcon } from "lucide-react";
+import { ArrowRight, PlusIcon } from "lucide-react";
 import { useFieldArray, type UseFormReturn } from "react-hook-form";
 import FormTitle from "@/core/presentation/components/shared/FormTitle";
 import FormSwitchInput from "@/core/presentation/components/custom/Form/FormSwitchInput";
@@ -8,9 +8,10 @@ import { PlatformItem } from "./PlatformItem";
 
 interface ApplicationPlatformFormProps {
   form: UseFormReturn<StatementOfWorkRequest>;
+  navigateToNextForm: () => void;
 }
 
-export default function SOWApplicationPlatformForm({ form }: ApplicationPlatformFormProps) {
+export default function SOWApplicationPlatformForm({ form, navigateToNextForm }: ApplicationPlatformFormProps) {
   const { control } = form;
 
   const {
@@ -58,6 +59,10 @@ export default function SOWApplicationPlatformForm({ form }: ApplicationPlatform
       {/* ADD PLATFORM BUTTON */}
       <Button type="button" variant="secondary" onClick={handleAddPlatform}>
         Add platform <PlusIcon />
+      </Button>
+
+      <Button type="button" className="w-fit self-end mt-10" onClick={navigateToNextForm}>
+        Next <ArrowRight />
       </Button>
     </div>
   );

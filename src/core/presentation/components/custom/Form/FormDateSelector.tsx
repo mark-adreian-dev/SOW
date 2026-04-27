@@ -6,7 +6,6 @@ import { Button } from "@/core/presentation/components/base/ui/button";
 import { Calendar } from "@/core/presentation/components/base/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/core/presentation/components/base/ui/popover";
 import { ChevronDownIcon, type LucideIcon } from "lucide-react";
-import { cn } from "@/core/presentation/lib/utils";
 import { formatDate } from "@/core/helpers/formatDate";
 
 export type FormDateSelectorProps<T extends FieldValues> = {

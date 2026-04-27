@@ -54,7 +54,7 @@ export const generateStatementOfWork = async (values: StatementOfWorkRequest) =>
       mimeType: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
     });
 
-    saveAs(blob, `${values.project_name || "contract"}.docx`);
+    return saveAs(blob, `${values.project_name || "contract"}.docx`);
   } catch (error) {
     console.error("Error generating DOCX:", error);
   }

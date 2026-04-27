@@ -3,13 +3,13 @@ import FormNumberInput from "@/core/presentation/components/custom/Form/FormNumb
 import FormTextArea from "@/core/presentation/components/custom/Form/FormTextArea";
 import FormTextInput from "@/core/presentation/components/custom/Form/FormTextInput";
 import { GripVertical, PlusCircleIcon, Trash2Icon } from "lucide-react";
-import { useFieldArray, type UseFormReturn } from "react-hook-form";
+import { useFieldArray, type Control, type UseFormReturn } from "react-hook-form";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/core/presentation/components/base/ui/accordion";
 import ListHandlerForm from "@/core/presentation/components/shared/ListHandlerForm";
 import type { StatementOfWorkRequest } from "@/core/domain/schema/statement-of-work.schema";
 
 interface PlatformItemProps {
-  control: any;
+  control: Control<StatementOfWorkRequest>;
   form: UseFormReturn<StatementOfWorkRequest>;
   platformIndex: number;
   removePlatform: (index: number) => void;
@@ -18,7 +18,7 @@ interface PlatformItemProps {
 export function PlatformItem({ control, form, platformIndex, removePlatform }: PlatformItemProps) {
   const {
     fields: featureFields,
-    append: appendModule,
+    prepend: prependModule,
     remove: removeModule,
   } = useFieldArray({
     control,
@@ -26,7 +26,7 @@ export function PlatformItem({ control, form, platformIndex, removePlatform }: P
   });
 
   const addModule = () => {
-    appendModule({
+    prependModule({
       feature_index: Date.now(),
       feature_name: "",
       description: "",
@@ -55,76 +55,81 @@ export function PlatformItem({ control, form, platformIndex, removePlatform }: P
           </Button>
         </div>
       </div>
+      <div>
+        {/* PLATFORM NAME */}
+        <FormTextInput control={control} name={`applicationPlatformRequirements.${platformIndex}.name`} label="Platform name" className="text-lg!" />
 
-      {/* PLATFORM NAME */}
-      <FormTextInput control={control} name={`applicationPlatformRequirements.${platformIndex}.name`} label="Platform name" />
+        {/* FEATURES */}
+        <Accordion type="multiple" className="flex flex-col gap-4 w-full">
+          {featureFields.map((field, featureIndex) => {
+            const featureName = form.watch(`applicationPlatformRequirements.${platformIndex}.features.${featureIndex}.feature_name`);
 
-      {/* FEATURES */}
-      <Accordion type="multiple" className="flex flex-col gap-4 w-full">
-        {featureFields.map((field, featureIndex) => {
-          const featureName = form.watch(`applicationPlatformRequirements.${platformIndex}.features.${featureIndex}.feature_name`);
+            return (
+              <AccordionItem key={field.id} value={`feature-${featureIndex}`} className="border rounded-md px-4">
+                <AccordionTrigger className="cursor-pointer">
+                  <div className="flex items-center gap-3">
+                    <GripVertical />
 
-          return (
-            <AccordionItem key={field.id} value={`feature-${featureIndex}`} className="border rounded-md px-4">
-              <AccordionTrigger>
-                <div className="flex items-center gap-3">
-                  <GripVertical />
+                    <Button type="button" variant="icon" size="icon" onClick={() => removeModule(featureIndex)}>
+                      <Trash2Icon />
+                    </Button>
 
-                  <Button type="button" variant="icon" size="icon" onClick={() => removeModule(featureIndex)}>
-                    <Trash2Icon />
-                  </Button>
+                    <span className="font-semibold text-foreground">{featureName || `Module #${featureIndex + 1}`}</span>
+                  </div>
+                </AccordionTrigger>
 
-                  <span className="font-semibold text-primary">{featureName || `Module #${featureIndex + 1}`}</span>
-                </div>
-              </AccordionTrigger>
-
-              <AccordionContent>
-                <div className="flex flex-col gap-4">
-                  <FormTextInput
-                    control={control}
-                    name={`applicationPlatformRequirements.${platformIndex}.features.${featureIndex}.feature_name`}
-                    label="Feature name"
-                  />
-
-                  <div className="flex gap-5">
-                    <div className="w-full">
-                      <FormNumberInput
+                <AccordionContent>
+                  <div className="flex flex-col gap-10">
+                    <div>
+                      <FormTextInput
                         control={control}
-                        name={`applicationPlatformRequirements.${platformIndex}.features.${featureIndex}.dev_story_points`}
-                        label="Dev Points"
+                        name={`applicationPlatformRequirements.${platformIndex}.features.${featureIndex}.feature_name`}
+                        label="Feature name"
+                        className="text-md!"
+                      />
+                      <FormTextArea
+                        control={control}
+                        name={`applicationPlatformRequirements.${platformIndex}.features.${featureIndex}.feature_obj`}
+                        label="Objectives"
                       />
 
-                      <FormNumberInput
+                      <FormTextArea
                         control={control}
-                        name={`applicationPlatformRequirements.${platformIndex}.features.${featureIndex}.test_story_points`}
-                        label="Test Points"
+                        name={`applicationPlatformRequirements.${platformIndex}.features.${featureIndex}.description`}
+                        label="Description"
                       />
                     </div>
 
-                    <ListHandlerForm
-                      form={form}
-                      title="Acceptance Criteria"
-                      path={`applicationPlatformRequirements.${platformIndex}.features.${featureIndex}.acceptance_criteria`}
-                    />
+                    <div className="flex flex-col gap-10">
+                      <ListHandlerForm
+                        form={form}
+                        title="Acceptance Criteria"
+                        path={`applicationPlatformRequirements.${platformIndex}.features.${featureIndex}.acceptance_criteria`}
+                      />
+
+                      <div className="w-full flex gap-5">
+                        <FormNumberInput
+                          control={control}
+                          name={`applicationPlatformRequirements.${platformIndex}.features.${featureIndex}.dev_story_points`}
+                          label="Development Points"
+                          inputControls={true}
+                        />
+
+                        <FormNumberInput
+                          control={control}
+                          name={`applicationPlatformRequirements.${platformIndex}.features.${featureIndex}.test_story_points`}
+                          label="Test Points"
+                          inputControls={true}
+                        />
+                      </div>
+                    </div>
                   </div>
-
-                  <FormTextArea
-                    control={control}
-                    name={`applicationPlatformRequirements.${platformIndex}.features.${featureIndex}.description`}
-                    label="Description"
-                  />
-
-                  <FormTextArea
-                    control={control}
-                    name={`applicationPlatformRequirements.${platformIndex}.features.${featureIndex}.feature_obj`}
-                    label="Objectives"
-                  />
-                </div>
-              </AccordionContent>
-            </AccordionItem>
-          );
-        })}
-      </Accordion>
+                </AccordionContent>
+              </AccordionItem>
+            );
+          })}
+        </Accordion>
+      </div>
     </div>
   );
 }

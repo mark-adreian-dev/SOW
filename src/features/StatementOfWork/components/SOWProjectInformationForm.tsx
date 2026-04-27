@@ -5,14 +5,15 @@ import FormTextArea from "@/core/presentation/components/custom/Form/FormTextAre
 import FormTextInput from "@/core/presentation/components/custom/Form/FormTextInput";
 import FormTitle from "@/core/presentation/components/shared/FormTitle";
 import ListHandlerForm from "@/core/presentation/components/shared/ListHandlerForm";
-import { ArrowRight, DownloadIcon } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import type { UseFormReturn } from "react-hook-form";
 
 interface AcknowledgementFormProps {
   form: UseFormReturn<StatementOfWorkRequest>;
+  navigateToNextForm: () => void;
 }
 
-export default function SOWProjectInformationForm({ form }: AcknowledgementFormProps) {
+export default function SOWProjectInformationForm({ form, navigateToNextForm }: AcknowledgementFormProps) {
   const control = form.control;
 
   return (
@@ -22,8 +23,8 @@ export default function SOWProjectInformationForm({ form }: AcknowledgementFormP
         <FormTextInput control={control} name="project_name" label="Project Name" className="text-lg!" />
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <FormDateSelector control={control} name="submission_date" label="Submission Date" className="text-3xl!" />
-          <FormDateSelector control={control} name="start_date" label="Start Date" />
+          <FormDateSelector control={control} name="submission_date" label="Submission Date" className="text-3xl!" allowFutureDates={true} />
+          <FormDateSelector control={control} name="start_date" label="Start Date" allowFutureDates={true} />
         </div>
       </div>
 
@@ -46,7 +47,7 @@ export default function SOWProjectInformationForm({ form }: AcknowledgementFormP
         <FormTextArea control={control} className="min-h-100" label="Specification" name="specifications" />
       </div>
 
-      <Button type="button" className="self-end">
+      <Button type="button" className="self-end" onClick={navigateToNextForm}>
         Next <ArrowRight />
       </Button>
     </div>

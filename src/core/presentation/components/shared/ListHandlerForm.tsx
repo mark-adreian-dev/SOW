@@ -11,6 +11,11 @@ interface ListHandlerFormProps<T extends FieldValues> {
   path: Path<T>;
 }
 
+interface List {
+  detail: string;
+  list_index: number;
+}
+
 export default function ListHandlerForm<T extends FieldValues>({ form, title, path }: ListHandlerFormProps<T>) {
   const { control, setValue, getValues } = form;
 
@@ -54,7 +59,7 @@ export default function ListHandlerForm<T extends FieldValues>({ form, title, pa
 
   return (
     <div className="w-full">
-      {title && <Label className="mb-3">{title}</Label>}
+      {title && <Label className="mb-3  text-muted-foreground">{title}</Label>}
 
       {/* INPUT */}
       <div className="w-full flex items-center gap-2">

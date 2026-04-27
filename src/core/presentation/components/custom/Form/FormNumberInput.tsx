@@ -146,7 +146,7 @@ export default function FormNumberInput<T extends FieldValues>({
             {label && (
               <div className="flex items-center gap-2 h-6">
                 {FieldIcon && <FieldIcon className="w-4 h-4 text-muted-foreground" />}
-                <FieldLabel htmlFor={field.name} className="flex items-center gap-1">
+                <FieldLabel htmlFor={field.name} className="flex items-center gap-1  text-muted-foreground">
                   {label} {inputProps.required && <span className="text-destructive">*</span>}
                 </FieldLabel>
               </div>

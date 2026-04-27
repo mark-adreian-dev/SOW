@@ -48,7 +48,7 @@ export default function FormTextInput<T extends FieldValues>({ control, name, la
               id={field.name}
               aria-invalid={fieldState.invalid}
               className={cn(
-                `w-full pr-10 ${fieldState.error && "border-destructive!"} border-none text-2xl! focus:ring-0! focus:outline-0!`,
+                `w-full pr-10 ${fieldState.error && "border-destructive!"} border-none text-foreground/90! text-2xl! focus:ring-0! focus:outline-0!`,
                 inputProps.className
               )}
               type={isPasswordField ? (isPasswordVisible ? "text" : "password") : inputProps.type}
