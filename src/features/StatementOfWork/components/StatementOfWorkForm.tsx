@@ -5,75 +5,41 @@ import FormDateSelector from "@/core/presentation/components/custom/Form/FormDat
 import FormTextInput from "@/core/presentation/components/custom/Form/FormTextInput";
 import FormTextArea from "@/core/presentation/components/custom/Form/FormTextArea";
 import FormSwitchInput from "@/core/presentation/components/custom/Form/FormSwitchInput";
-import ListHandlerForm from "./ListHandlerForm";
-import ApplicationPlatformForm from "./ApplicationPlatformForm";
+import ListHandlerForm from "../../../core/presentation/components/shared/ListHandlerForm";
+import ApplicationPlatformForm from "./SOWApplicationPlatformForm";
 import { generateStatementOfWork } from "@/core/lib/generateStatementOfWork";
 import { PlusCircle } from "lucide-react";
 
 import { useFieldArray, type UseFormReturn } from "react-hook-form";
+
+import SOWAcknowledgementForm from "./SOWAcknowledgementForm";
+import { Progress } from "@/core/presentation/components/base/ui/progress";
+import SOWProjectInformationForm from "./SOWProjectInformationForm";
+import SOWApplicationPlatformForm from "./SOWApplicationPlatformForm";
 
 interface StatementOfWorkFormProps {
   form: UseFormReturn<StatementOfWorkRequest>;
 }
 
 export default function StatementOfWorkForm({ form }: StatementOfWorkFormProps) {
-  const { control } = form;
-
-  const { fields, append, remove } = useFieldArray({
-    control,
-    name: "applicationPlatformRequirements",
-  });
-
   const handleSubmit = async (values: StatementOfWorkRequest) => {
     console.log(values);
     await generateStatementOfWork(values);
   };
 
   return (
-    <div>
-      <h1 className="text-4xl font-bold">Statement of Work</h1>
+    <div className="px-12">
+      {/* <h1 className="text-4xl font-bold">Statement of Work</h1> */}
+      <Progress value={50} className="mb-5 h-2" />
 
       <Form form={form} onSubmit={handleSubmit} formID="contract-form">
         {/* ACKNOWLEDGEMENT */}
-        <div className="my-10">
-          <h2 className="text-xl font-bold mb-5 text-primary">Acknowledgement</h2>
-
-          <FormTextInput control={control} name="client_name" label="Client name" />
-
-          <div className="flex gap-4">
-            <FormTextInput control={control} name="prepared_by" label="Prepared by" />
-            <FormTextInput control={control} name="prepared_by_position" label="Position" />
-          </div>
-
-          <div className="flex gap-4">
-            <FormTextInput control={control} name="noted_by" label="Noted By" />
-            <FormTextInput control={control} name="noted_by_position" label="Position" />
-          </div>
-        </div>
-
-        {/* PROJECT INFO */}
-        <div className="my-10">
-          <h2 className="text-xl font-bold mb-5 text-primary">Project Information</h2>
-
-          <FormTextInput control={control} name="project_name" label="Project Name" />
-
-          <div className="flex gap-4">
-            <FormDateSelector control={control} name="submission_date" label="Submission Date" />
-            <FormDateSelector control={control} name="start_date" label="Start Date" />
-          </div>
-        </div>
-
-        {/* OBJECTIVES / COUNTRIES */}
-        <div className="flex gap-4 my-10">
-          <ListHandlerForm form={form} title="Add Objectives" path="objectives" />
-          <ListHandlerForm form={form} title="Add Countries" path="countries" />
-        </div>
-
-        {/* SPECIFICATION */}
-        <FormTextArea control={control} className="min-h-100" label="Specification" name="specifications" />
+        {/* <SOWAcknowledgementForm form={form} /> */}
+        {/* <SOWProjectInformationForm form={form} /> */}
+        <SOWApplicationPlatformForm form={form} />
 
         {/* DEVICE PLATFORMS */}
-        <div className="my-10">
+        {/* <div className="my-10">
           <h2 className="text-xl font-bold mb-5 text-primary">Device Platforms</h2>
 
           <div className="flex gap-6">
@@ -86,10 +52,10 @@ export default function StatementOfWorkForm({ form }: StatementOfWorkFormProps) 
 
             <FormSwitchInput control={control} name="isPlatformMobile" label="Mobile" description="Available on Android and iOS devices." />
           </div>
-        </div>
+        </div> */}
 
         {/* APPLICATION PLATFORMS */}
-        <div className="my-10">
+        {/* <div className="my-10">
           <h2 className="text-xl font-bold mb-5 text-primary">Application Platforms</h2>
 
           <Button
@@ -114,7 +80,16 @@ export default function StatementOfWorkForm({ form }: StatementOfWorkFormProps) 
           </div>
         </div>
 
-        <Button type="submit">Submit</Button>
+        <div className="my-10">
+          <h2 className="text-xl font-bold mb-5 text-primary">Sprint Timelines</h2>
+          <FormDateSelector control={control} name="development_start_date" label="Development start date:" />
+          <FormDateSelector control={control} name="development_end_date" label="Development end date" />
+          <FormDateSelector control={control} name="testing_start_date" label="Testing start date" />
+          <FormDateSelector control={control} name="testing_end_date" label="Testng end date" />
+          <FormDateSelector control={control} name="uat_release_date" label="UAT release date" />
+          <FormDateSelector control={control} name="prod_release_date" label="Production release date" />
+        </div> */}
+        {/* <Button type="submit">Submit</Button> */}
       </Form>
     </div>
   );

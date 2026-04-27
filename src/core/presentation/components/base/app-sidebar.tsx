@@ -1,31 +1,65 @@
 import * as React from "react";
-import { NavMain } from "@/core/presentation/components/base/nav-main";
-import { NavUser } from "@/core/presentation/components/base/nav-user";
+import { ChevronDown, FileSignatureIcon, GalleryVerticalEnd } from "lucide-react";
+
 import {
   Sidebar,
   SidebarContent,
-  SidebarFooter,
+  SidebarGroup,
   SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  SidebarMenuSub,
+  SidebarMenuSubButton,
+  SidebarMenuSubItem,
+  SidebarRail,
 } from "@/core/presentation/components/base/ui/sidebar";
-import CCSLogo from "@/core/presentation/assets/ccs-logo.png";
-import type { AppSideBar } from "../../types/app-sidebar.types";
+import { Link } from "react-router-dom";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "./ui/collapsible";
+import { Button } from "./ui/button";
 
-export function AppSidebar({ sideBarConfig, ...props }: React.ComponentProps<typeof Sidebar> & { sideBarConfig: AppSideBar }) {
+// This is sample data.
+const data = {
+  navMain: [
+    {
+      title: "Statement of Work",
+      url: "#",
+      items: [
+        {
+          title: "Acknowledgement",
+          url: "#",
+        },
+        {
+          title: "Project Information",
+          url: "#",
+        },
+        {
+          title: "Application Platforms",
+          url: "#",
+        },
+        {
+          title: "Timelines",
+          url: "#",
+        },
+      ],
+    },
+  ],
+};
+
+export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
-    <Sidebar collapsible="offcanvas" {...props}>
-      <SidebarHeader className="px-0">
+    <Sidebar {...props}>
+      <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton asChild className="data-[slot=sidebar-menu-button]:p-1.5! h-fit">
-              <a href="#" className="flex gap-4">
-                <div className="h-full aspect-auto relative">
-                  <img src={CCSLogo} className="object-contain object-center w-20 h-20" />
+            <SidebarMenuButton size="lg" asChild>
+              <a href="#">
+                <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
+                  <FileSignatureIcon className="size-4" />
                 </div>
-                <div>
-                  <span className="text-base font-semibold truncate-none! whitespace-normal!">College of Computing Studies (CCS)</span>
+                <div className="flex flex-col gap-0.5 leading-none">
+                  <span className="font-semibold">Draftlify</span>
+                  <span className="">v1.0.0</span>
                 </div>
               </a>
             </SidebarMenuButton>
@@ -33,13 +67,48 @@ export function AppSidebar({ sideBarConfig, ...props }: React.ComponentProps<typ
         </SidebarMenu>
       </SidebarHeader>
       <SidebarContent>
-        <NavUser user={sideBarConfig.user} />
-        <NavMain items={sideBarConfig.navMain} />
+        <SidebarGroup>
+          <SidebarMenu>
+            {data.navMain.map((group) => (
+              <Collapsible key={group.title} className="group/collapsible">
+                <SidebarMenuItem>
+                  {/* HEADER / TRIGGER */}
+                  <CollapsibleTrigger asChild>
+                    <SidebarMenuButton className="flex w-full items-center justify-between">
+                      <span className="font-medium">{group.title}</span>
 
-        {/* <NavSecondary items={sideBarConfig.navSecondary} className="mt-auto" />
-        <NavDocuments items={sideBarConfig.documents}/> */}
+                      {group.items?.length ? (
+                        <ChevronDown className="size-4 transition-transform group-data-[state=open]/collapsible:rotate-180" />
+                      ) : null}
+                    </SidebarMenuButton>
+                  </CollapsibleTrigger>
+
+                  {/* COLLAPSIBLE CONTENT */}
+                  {group.items?.length ? (
+                    <CollapsibleContent>
+                      <SidebarMenuSub className="gap-5">
+                        {group.items.map((item, index) => (
+                          <SidebarMenuSubItem key={item.title}>
+                            <SidebarMenuSubButton asChild className="h-fit py-2">
+                              {
+                                <div className="flex items-center">
+                                  <div className="w-10 h-10 flex items-center justify-center bg-primary rounded-full! p-!">{index + 1}</div>
+                                  <Link to={item.url}>{item.title}</Link>
+                                </div>
+                              }
+                            </SidebarMenuSubButton>
+                          </SidebarMenuSubItem>
+                        ))}
+                      </SidebarMenuSub>
+                    </CollapsibleContent>
+                  ) : null}
+                </SidebarMenuItem>
+              </Collapsible>
+            ))}
+          </SidebarMenu>
+        </SidebarGroup>
       </SidebarContent>
-      <SidebarFooter></SidebarFooter>
+      <SidebarRail />
     </Sidebar>
   );
 }

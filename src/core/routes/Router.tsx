@@ -1,6 +1,7 @@
 import { lazy, Suspense } from "react";
 import { Route, Routes } from "react-router-dom";
 import LoadingSpinner from "../presentation/components/custom/Loader/LoadingSpinner";
+import WorkspaceLayout from "../presentation/layout/WorkspaceLayout";
 const StatementOfWorkPage = lazy(() => import("@/features/StatementOfWork/page/StatementOfWorkPage"));
 
 export const Router = () => {
@@ -14,7 +15,9 @@ export const Router = () => {
       }
     >
       <Routes>
-        <Route index element={<StatementOfWorkPage />} />
+        <Route element={<WorkspaceLayout />}>
+          <Route index element={<StatementOfWorkPage />} />
+        </Route>
       </Routes>
     </Suspense>
   );

@@ -1,39 +1,73 @@
-import { SidebarGroup, SidebarGroupContent, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "@/core/presentation/components/base/ui/sidebar";
-import { Link, useLocation } from "react-router-dom";
+"use client"
+
+import { ChevronRight, type LucideIcon } from "lucide-react"
+
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/core/presentation/components/base/ui/collapsible"
+import {
+  SidebarGroup,
+  SidebarGroupLabel,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+  SidebarMenuSub,
+  SidebarMenuSubButton,
+  SidebarMenuSubItem,
+} from "@/core/presentation/components/base/ui/sidebar"
 
 export function NavMain({
   items,
 }: {
   items: {
-    title: string;
-    url: string;
-    icon?: React.ReactNode;
-  }[];
+    title: string
+    url: string
+    icon?: LucideIcon
+    isActive?: boolean
+    items?: {
+      title: string
+      url: string
+    }[]
+  }[]
 }) {
-  const location = useLocation();
-  const pathName = location.pathname;
-
   return (
     <SidebarGroup>
-      <SidebarGroupContent className="flex flex-col gap-2">
-        <SidebarMenu className="gap-2">
-          {items.map((item) => (
-            <Link key={item.title} to={item.url}>
-              <SidebarMenuItem>
-                <SidebarMenuButton
-                  tooltip={item.title}
-                  className={`${
-                    pathName.toLowerCase().includes(item.title.toLowerCase()) && "bg-primary text-primary-foreground"
-                  } hover:bg-primary hover:text-primary-foreground active:bg-primary active:text-white`}
-                >
-                  {item.icon}
+      <SidebarGroupLabel>Platform</SidebarGroupLabel>
+      <SidebarMenu>
+        {items.map((item) => (
+          <Collapsible
+            key={item.title}
+            asChild
+            defaultOpen={item.isActive}
+            className="group/collapsible"
+          >
+            <SidebarMenuItem>
+              <CollapsibleTrigger asChild>
+                <SidebarMenuButton tooltip={item.title}>
+                  {item.icon && <item.icon />}
                   <span>{item.title}</span>
+                  <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
                 </SidebarMenuButton>
-              </SidebarMenuItem>
-            </Link>
-          ))}
-        </SidebarMenu>
-      </SidebarGroupContent>
+              </CollapsibleTrigger>
+              <CollapsibleContent>
+                <SidebarMenuSub>
+                  {item.items?.map((subItem) => (
+                    <SidebarMenuSubItem key={subItem.title}>
+                      <SidebarMenuSubButton asChild>
+                        <a href={subItem.url}>
+                          <span>{subItem.title}</span>
+                        </a>
+                      </SidebarMenuSubButton>
+                    </SidebarMenuSubItem>
+                  ))}
+                </SidebarMenuSub>
+              </CollapsibleContent>
+            </SidebarMenuItem>
+          </Collapsible>
+        ))}
+      </SidebarMenu>
     </SidebarGroup>
-  );
+  )
 }

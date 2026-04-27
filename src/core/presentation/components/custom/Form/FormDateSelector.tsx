@@ -6,6 +6,8 @@ import { Button } from "@/core/presentation/components/base/ui/button";
 import { Calendar } from "@/core/presentation/components/base/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/core/presentation/components/base/ui/popover";
 import { ChevronDownIcon, type LucideIcon } from "lucide-react";
+import { cn } from "@/core/presentation/lib/utils";
+import { formatDate } from "@/core/helpers/formatDate";
 
 export type FormDateSelectorProps<T extends FieldValues> = {
   control: Control<T>;
@@ -56,11 +58,11 @@ export default function FormDateSelector<T extends FieldValues>({
                   <Button
                     variant="outline"
                     id={field.name}
-                    className={`w-full justify-between font-normal bg-input/40 focus:ring focus:ring-primary/50 ${
+                    className={`w-full justify-between font-normal focus:ring focus:ring-primary/50 ${
                       !dateValue && "text-muted-foreground"
                     } ${fieldState.error && "border border-destructive!"}`}
                   >
-                    <p>{dateValue instanceof Date ? dateValue.toLocaleDateString() : "Select date"}</p>
+                    <p>{dateValue instanceof Date ? formatDate(dateValue, "long") : "Select date"}</p>
                     <ChevronDownIcon className="h-4 w-4 opacity-50" />
                   </Button>
                 </PopoverTrigger>

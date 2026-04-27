@@ -4,8 +4,8 @@ import { Field, FieldDescription, FieldError, FieldLabel } from "@/core/presenta
 import { RadioGroup, RadioGroupItem } from "@/core/presentation/components/base/ui/radio-group";
 import { Label } from "@/core/presentation/components/base/ui/label";
 import type { LucideIcon } from "lucide-react";
-import type { RadioOption } from "@/core/presentation/types/radio-option.types";
 
+import type { RadioOption } from "@/core/presentation/types/radio-option.types";
 export type FormRadioButtonProps<T extends FieldValues> = {
   control: Control<T>;
   name: Path<T>;

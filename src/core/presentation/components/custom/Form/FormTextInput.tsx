@@ -4,6 +4,7 @@ import { useState, type InputHTMLAttributes } from "react";
 import { Field, FieldDescription, FieldError, FieldLabel } from "@/core/presentation/components/base/ui/field";
 import { Input } from "@/core/presentation/components/base/ui/input";
 import { Eye, EyeOff, type LucideIcon } from "lucide-react";
+import { cn } from "@/core/presentation/lib/utils";
 
 // Replaced 'any' with unknown for safer loosening of strictness
 export type FormTextInputProps<T extends FieldValues> = {
@@ -27,12 +28,12 @@ export default function FormTextInput<T extends FieldValues>({ control, name, la
       name={name}
       control={control}
       render={({ field, fieldState }) => (
-        <Field className="w-full flex flex-col gap-1" data-invalid={fieldState.invalid}>
+        <Field className={cn("w-full flex flex-col gap-1", inputProps.className)} data-invalid={fieldState.invalid}>
           {/* Label Section */}
           {label && (
             <div className="flex items-center gap-2 h-6">
               {FieldIcon && <FieldIcon className="w-4 h-4 text-muted-foreground" />}
-              <FieldLabel htmlFor={field.name} className="flex items-center gap-1">
+              <FieldLabel htmlFor={field.name} className="flex items-center gap-1 text-muted-foreground">
                 {label}
                 {inputProps.required && <span className="text-destructive">*</span>}
               </FieldLabel>
@@ -40,13 +41,16 @@ export default function FormTextInput<T extends FieldValues>({ control, name, la
           )}
 
           {/* Input Container */}
-          <div className={`relative borderflex items-center rounded-md overflow-hidden`}>
+          <div className={cn(`relative border rounded-md items-center overflow-hidden`, inputProps.className)}>
             <Input
               {...field}
               {...inputProps}
               id={field.name}
               aria-invalid={fieldState.invalid}
-              className={`w-full pr-10 ${fieldState.error && "border-destructive!"} hover:bg-input!`}
+              className={cn(
+                `w-full pr-10 ${fieldState.error && "border-destructive!"} border-none text-2xl! focus:ring-0! focus:outline-0!`,
+                inputProps.className
+              )}
               type={isPasswordField ? (isPasswordVisible ? "text" : "password") : inputProps.type}
             />
 

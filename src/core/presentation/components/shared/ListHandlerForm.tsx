@@ -65,9 +65,9 @@ export default function ListHandlerForm<T extends FieldValues>({ form, title, pa
       </div>
 
       {/* LIST */}
-      <div className="mt-3 space-y-2">
+      <div className="mt-10 space-y-5">
         {items.map((item, index) => (
-          <div className="flex items-center gap-4" key={index}>
+          <div className="flex items-start gap-4" key={index}>
             <Button type="button" variant="icon" size="icon" onClick={() => removeItem(index)}>
               <Trash2Icon />
             </Button>

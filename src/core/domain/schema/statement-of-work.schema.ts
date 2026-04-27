@@ -36,6 +36,13 @@ export const StatementOfWorkSchema = z.object({
   isPlatformMobile: z.boolean(),
   specifications: z.string().min(1, "Specification is required."),
   applicationPlatformRequirements: z.array(StatementOfWorkApplicationPlatform),
+
+  development_start_date: z.date().min(1, "Development start date is required"),
+  development_end_date: z.date().min(1, "Development end date is required"),
+  testing_start_date: z.date().min(1, "Testing start date is required"),
+  testing_end_date: z.date().min(1, "Testing end date is required"),
+  uat_release_date: z.date().min(1, "UAT release date is required"),
+  prod_release_date: z.date().min(1, "Production release date is required"),
 });
 
 export type StatementOfWorkRequest = z.infer<typeof StatementOfWorkSchema>;
