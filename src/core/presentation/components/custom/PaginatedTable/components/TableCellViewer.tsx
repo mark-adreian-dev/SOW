@@ -73,7 +73,6 @@ export function TableCellViewer<TData extends Record<string, string | number | r
                   <ChartTooltip cursor={false} content={<ChartTooltipContent indicator="dot" />} />
                   {dataKeys.map((dataKey, index) => {
                     const opacity = Math.max(0.1, 0.5 - index * 0.2);
-                    console.log(`var(--color-${dataKey})`);
 
                     return (
                       <Area

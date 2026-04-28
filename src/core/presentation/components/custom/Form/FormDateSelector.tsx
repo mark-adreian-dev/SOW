@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Controller } from "react-hook-form";
-import type { Control, FieldValues, Path } from "react-hook-form";
+import type { Control, FieldValues, Path, UseFormReturn } from "react-hook-form";
 import { Field, FieldDescription, FieldError, FieldLabel } from "@/core/presentation/components/base/ui/field";
 import { Button } from "@/core/presentation/components/base/ui/button";
 import { Calendar } from "@/core/presentation/components/base/ui/calendar";
@@ -9,7 +9,7 @@ import { ChevronDownIcon, type LucideIcon } from "lucide-react";
 import { formatDate } from "@/core/helpers/formatDate";
 
 export type FormDateSelectorProps<T extends FieldValues> = {
-  control: Control<T>;
+  form: UseFormReturn<T>;
   name: Path<T>;
   label?: string;
   description?: string;
@@ -20,9 +20,9 @@ export type FormDateSelectorProps<T extends FieldValues> = {
 };
 
 export default function FormDateSelector<T extends FieldValues>({
-  control,
   name,
   label,
+  form,
   description,
   FieldIcon,
   required,
@@ -34,7 +34,7 @@ export default function FormDateSelector<T extends FieldValues>({
   return (
     <Controller
       name={name}
-      control={control}
+      control={form.control}
       render={({ field, fieldState }) => {
         const dateValue = (field.value as unknown) instanceof Date ? (field.value as unknown as Date) : null;
         return (
@@ -72,6 +72,7 @@ export default function FormDateSelector<T extends FieldValues>({
                     selected={dateValue ?? undefined}
                     onSelect={(date) => {
                       field.onChange(date);
+                      form.trigger(name);
                       setOpen(false);
                     }}
                     disabled={(date) => date < new Date("1900-01-01") || (!allowFutureDates && date > new Date())}

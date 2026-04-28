@@ -11,11 +11,6 @@ interface ListHandlerFormProps<T extends FieldValues> {
   path: Path<T>;
 }
 
-interface List {
-  detail: string;
-  list_index: number;
-}
-
 export default function ListHandlerForm<T extends FieldValues>({ form, title, path }: ListHandlerFormProps<T>) {
   const { control, setValue, getValues } = form;
 
@@ -29,7 +24,7 @@ export default function ListHandlerForm<T extends FieldValues>({ form, title, pa
       name: path,
     }) as { list_index: number; detail: string }[]) || [];
 
-  const addItem = (value: string) => {
+  const addItem = async (value: string) => {
     if (!value.trim()) return;
 
     const current = (getValues(path) || []) as typeof items;
@@ -39,8 +34,16 @@ export default function ListHandlerForm<T extends FieldValues>({ form, title, pa
       detail: value,
     };
 
-    setValue(path, [...current, newEntry] as any);
-    setNewItem(""); // clear input
+    setValue(path, [...current, newEntry] as any, {
+      shouldDirty: true,
+      shouldTouch: true,
+      shouldValidate: true,
+    });
+
+    setNewItem("");
+
+    // 🔥 revalidate AFTER update
+    await form.trigger(path);
   };
 
   const removeItem = (index: number) => {
@@ -63,24 +66,31 @@ export default function ListHandlerForm<T extends FieldValues>({ form, title, pa
 
       {/* INPUT */}
       <div className="w-full flex items-center gap-2">
-        <Input className="w-full" placeholder={title} value={newItem} onChange={(e) => setNewItem(e.target.value)} />
+        <Input
+          className={`w-full ${form.getFieldState(path).error && "border-destructive"}`}
+          placeholder={title}
+          value={newItem}
+          onChange={(e) => setNewItem(e.target.value)}
+        />
         <Button type="button" onClick={() => addItem(newItem)}>
           <PlusCircleIcon />
         </Button>
       </div>
 
       {/* LIST */}
-      <div className="mt-10 space-y-5">
-        {items.map((item, index) => (
-          <div className="flex items-start gap-4" key={index}>
-            <Button type="button" variant="icon" size="icon" onClick={() => removeItem(index)}>
-              <Trash2Icon />
-            </Button>
+      {items.length !== 0 && (
+        <div className="mt-10">
+          {items.map((item, index) => (
+            <div className="flex items-start gap-4" key={index}>
+              <Button type="button" variant="icon" size="icon" onClick={() => removeItem(index)}>
+                <Trash2Icon />
+              </Button>
 
-            <p>{item.detail}</p>
-          </div>
-        ))}
-      </div>
+              <p>{item.detail}</p>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

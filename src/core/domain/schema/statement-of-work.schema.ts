@@ -18,32 +18,48 @@ export const StatementOfWorkFeatures = z.object({
 export const StatementOfWorkApplicationPlatform = z.object({
   application_platform_index: z.number().int(),
   name: z.string().min(1, "Platform name is required"),
-  features: z.array(StatementOfWorkFeatures),
+  features: z.array(StatementOfWorkFeatures).min(1, "At least one feature is required"),
 });
 
-export const StatementOfWorkSchema = z.object({
-  project_name: z.string().min(1, "Project name is required"),
-  client_name: z.string().min(1, "Client name is required"),
-  prepared_by: z.string().min(1, "Prepare by is required"),
-  prepared_by_position: z.string().min(1, "Prepare by position is required"),
-  noted_by_position: z.string().min(1, "Noted by position is required"),
-  noted_by: z.string().min(1, "Noted by is required"),
-  submission_date: z.date().min(1, "Submission date is required"),
-  start_date: z.date().min(1, "Start date is required"),
-  objectives: z.array(list).min(1, "Must have atleast 1 objectives"),
-  countries: z.array(list).min(1, "At least one country is required"),
-  isPlatformDesktop: z.boolean(),
-  isPlatformMobile: z.boolean(),
-  specifications: z.string().min(1, "Specification is required."),
-  applicationPlatformRequirements: z.array(StatementOfWorkApplicationPlatform),
+export const StatementOfWorkSchema = z
+  .object({
+    project_name: z.string().min(1, "Project name is required"),
+    client_name: z.string().min(1, "Client name is required"),
+    prepared_by: z.string().min(1, "Prepare by is required"),
+    prepared_by_position: z.string().min(1, "Prepare by position is required"),
+    noted_by_position: z.string().min(1, "Noted by position is required"),
+    noted_by: z.string().min(1, "Noted by is required"),
+    submission_date: z
+      .date()
+      .optional()
+      .refine((val) => val !== undefined, {
+        message: "Submission date is required",
+      }),
 
-  development_start_date: z.date().min(1, "Development start date is required"),
-  development_end_date: z.date().min(1, "Development end date is required"),
-  testing_start_date: z.date().min(1, "Testing start date is required"),
-  testing_end_date: z.date().min(1, "Testing end date is required"),
-  uat_release_date: z.date().min(1, "UAT release date is required"),
-  prod_release_date: z.date().min(1, "Production release date is required"),
-});
+    start_date: z
+      .date()
+      .optional()
+      .refine((val) => val !== undefined, {
+        message: "Start date is required",
+      }),
+    objectives: z.array(list).min(1, "Must have atleast 1 objectives"),
+    countries: z.array(list).min(1, "At least one country is required"),
+    isPlatformDesktop: z.boolean(),
+    isPlatformMobile: z.boolean(),
+    specifications: z.string().min(1, "Specification is required."),
+    applicationPlatformRequirements: z.array(StatementOfWorkApplicationPlatform).min(1, "At least one application platform requirement is required."),
+
+    development_start_date: z.date("Development start date is required"),
+    development_end_date: z.date("Development end date is required"),
+    testing_start_date: z.date("Testing start date is required"),
+    testing_end_date: z.date("Testing end date is required"),
+    uat_release_date: z.date("UAT release date is required"),
+    prod_release_date: z.date("Production release date is required"),
+  })
+  .refine((data) => data.isPlatformDesktop || data.isPlatformMobile, {
+    message: "At least one platform (Desktop or Mobile) must be selected",
+    path: ["isPlatformDesktop"],
+  });
 
 export type StatementOfWorkRequest = z.infer<typeof StatementOfWorkSchema>;
 export type StatementOfWorkApplicationPlatformRequest = z.infer<typeof StatementOfWorkApplicationPlatform>;
