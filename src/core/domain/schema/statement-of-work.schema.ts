@@ -29,19 +29,8 @@ export const StatementOfWorkSchema = z
     prepared_by_position: z.string().min(1, "Prepare by position is required"),
     noted_by_position: z.string().min(1, "Noted by position is required"),
     noted_by: z.string().min(1, "Noted by is required"),
-    submission_date: z
-      .date()
-      .optional()
-      .refine((val) => val !== undefined, {
-        message: "Submission date is required",
-      }),
-
-    start_date: z
-      .date()
-      .optional()
-      .refine((val) => val !== undefined, {
-        message: "Start date is required",
-      }),
+    submission_date: z.date("Submission date is required"),
+    start_date: z.date("Start date is required"),
     objectives: z.array(list).min(1, "Must have atleast 1 objectives"),
     countries: z.array(list).min(1, "At least one country is required"),
     isPlatformDesktop: z.boolean(),

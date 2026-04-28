@@ -6,7 +6,7 @@ import FormTextInput from "@/core/presentation/components/custom/Form/FormTextIn
 import FormTitle from "@/core/presentation/components/shared/FormTitle";
 import ListHandlerForm from "@/core/presentation/components/shared/ListHandlerForm";
 import { useStepValidation } from "@/core/presentation/hooks/useStepValidation";
-import { ArrowLeft, ArrowRight } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import type { UseFormReturn } from "react-hook-form";
 
 interface AcknowledgementFormProps {

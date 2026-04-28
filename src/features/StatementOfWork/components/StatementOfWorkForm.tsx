@@ -14,9 +14,8 @@ import SOWDownloadForm from "./SOWDonwloadForm";
 import SOWOnboard from "./SOWOnboard";
 
 //Preview
-import DocumenBackground from "@/core/presentation/assets/DocumentBacgkround.png";
 import { ScrollArea } from "@/core/presentation/components/base/ui/scroll-area";
-import { formatDate } from "@/core/helpers/formatDate";
+import SOWPreview from "./SOWPreview";
 
 interface StatementOfWorkFormProps {
   form: UseFormReturn<StatementOfWorkRequest>;
@@ -41,116 +40,103 @@ export default function StatementOfWorkForm({ form }: StatementOfWorkFormProps) 
   });
 
   return (
-    <div className="flex h-full">
-      <div className="w-full h-full px-12 min-h-screen ">
-        {activeTab !== "on-board" && <Progress value={progressValue} className="mb-5 h-2" />}
+    <ScrollArea className="flex h-[calc(100vh-65px)]">
+      <div className="flex gap-5 pr-2">
+        <ScrollArea className="h-[calc(100vh-65px)] w-full shadow-2xl bg-slate-100 pr-4">
+          <div className="w-full p-12 pr-0">
+            {activeTab !== "on-board" && <Progress value={progressValue} className="mb-5 h-2" />}
 
-        <Form<StatementOfWorkRequest> form={form} onSubmit={handleSubmit} formID="contract-form">
-          <Tabs value={activeTab} onValueChange={setActiveTab} className="h-full">
-            <TabsList className="hidden">
-              <TabsTrigger value="on-board">On Board</TabsTrigger>
-              <TabsTrigger value="project-information">Project Information</TabsTrigger>
-              <TabsTrigger value="platform">Application Platform</TabsTrigger>
-              <TabsTrigger value="timeline">Timeline</TabsTrigger>
-              <TabsTrigger value="acknowledgement">Acknowledgement</TabsTrigger>
-              <TabsTrigger value="download">Download</TabsTrigger>
-            </TabsList>
+            <Form<StatementOfWorkRequest> form={form} onSubmit={handleSubmit} formID="contract-form">
+              <Tabs value={activeTab} onValueChange={setActiveTab} className="h-full">
+                <TabsList className="hidden">
+                  <TabsTrigger value="on-board">On Board</TabsTrigger>
+                  <TabsTrigger value="project-information">Project Information</TabsTrigger>
+                  <TabsTrigger value="platform">Application Platform</TabsTrigger>
+                  <TabsTrigger value="timeline">Timeline</TabsTrigger>
+                  <TabsTrigger value="acknowledgement">Acknowledgement</TabsTrigger>
+                  <TabsTrigger value="download">Download</TabsTrigger>
+                </TabsList>
 
-            <TabsContent value="on-board" className="h-full">
-              <SOWOnboard
-                navigateToNextForm={() => {
-                  setActiveTab("project-information");
-                  setProgressValue(20);
-                }}
-              />
-            </TabsContent>
+                <TabsContent value="on-board" className="h-full">
+                  <SOWOnboard
+                    navigateToNextForm={() => {
+                      setActiveTab("project-information");
+                      setProgressValue(20);
+                    }}
+                  />
+                </TabsContent>
 
-            <TabsContent value="project-information">
-              <SOWProjectInformationForm
-                form={form}
-                navigateToNextForm={() => {
-                  setActiveTab("platform");
-                  setProgressValue(40);
-                }}
-              />
-            </TabsContent>
+                <TabsContent value="project-information">
+                  <SOWProjectInformationForm
+                    form={form}
+                    navigateToNextForm={() => {
+                      setActiveTab("platform");
+                      setProgressValue(40);
+                    }}
+                  />
+                </TabsContent>
 
-            <TabsContent value="platform">
-              <SOWApplicationPlatformForm
-                form={form}
-                navigateToNextForm={() => {
-                  setActiveTab("timeline");
-                  setProgressValue(60);
-                }}
-                navigateToPrevForm={() => {
-                  setActiveTab("project-information");
-                  setProgressValue(20);
-                }}
-              />
-            </TabsContent>
+                <TabsContent value="platform">
+                  <SOWApplicationPlatformForm
+                    form={form}
+                    navigateToNextForm={() => {
+                      setActiveTab("timeline");
+                      setProgressValue(60);
+                    }}
+                    navigateToPrevForm={() => {
+                      setActiveTab("project-information");
+                      setProgressValue(20);
+                    }}
+                  />
+                </TabsContent>
 
-            <TabsContent value="timeline">
-              <SOWTimelinesForm
-                form={form}
-                navigateToNextForm={() => {
-                  setActiveTab("acknowledgement");
-                  setProgressValue(80);
-                }}
-                navigateToPrevForm={() => {
-                  setActiveTab("platform");
-                  setProgressValue(60);
-                }}
-              />
-            </TabsContent>
+                <TabsContent value="timeline">
+                  <SOWTimelinesForm
+                    form={form}
+                    navigateToNextForm={() => {
+                      setActiveTab("acknowledgement");
+                      setProgressValue(80);
+                    }}
+                    navigateToPrevForm={() => {
+                      setActiveTab("platform");
+                      setProgressValue(60);
+                    }}
+                  />
+                </TabsContent>
 
-            <TabsContent value="acknowledgement">
-              <SOWAcknowledgementForm
-                form={form}
-                navigateToNextForm={() => {
-                  setActiveTab("download");
-                  setProgressValue(100);
-                }}
-                navigateToPrevForm={() => {
-                  setActiveTab("platform");
-                  setProgressValue(60);
-                }}
-              />
-            </TabsContent>
+                <TabsContent value="acknowledgement">
+                  <SOWAcknowledgementForm
+                    form={form}
+                    navigateToNextForm={() => {
+                      setActiveTab("download");
+                      setProgressValue(100);
+                    }}
+                    navigateToPrevForm={() => {
+                      setActiveTab("platform");
+                      setProgressValue(60);
+                    }}
+                  />
+                </TabsContent>
 
-            <TabsContent value="download">
-              <SOWDownloadForm
-                navigateToPrevForm={() => {
-                  setActiveTab("acknowledgement");
-                  setProgressValue(80);
-                }}
-              />
-            </TabsContent>
-          </Tabs>
-        </Form>
-      </div>
-
-      {activeTab !== "on-board" && (
-        <ScrollArea className="h-[90vh] w-250 shadow-2xl bg-slate-100 ">
-          {/* CENTERING WRAPPER 
-      This div provides the background and ensures the paper stays centered.
-      We use flex and justify-center.
-  */}
-          <div
-            className="w-full h-full p-10"
-            style={{
-              backgroundImage: `url(${DocumenBackground})`,
-              backgroundSize: "100% auto",
-              backgroundRepeat: "repeat-y",
-            }}
-          >
-            <h1 className="text-blue-800 text-[150px] mt-30 font-semibold">SOW</h1>
-            <h2 className="text-muted-foreground text-2xl mb-21">{watchedValues.project_name}</h2>
-            <h2 className="text-muted-foreground text-2xl">
-              Date: {watchedValues.submission_date ? formatDate(watchedValues.submission_date, "long") : "N/A"}
-            </h2>
+                <TabsContent value="download">
+                  <SOWDownloadForm
+                    navigateToPrevForm={() => {
+                      setActiveTab("acknowledgement");
+                      setProgressValue(80);
+                    }}
+                  />
+                </TabsContent>
+              </Tabs>
+            </Form>
           </div>
         </ScrollArea>
-      )}
-    </div>
+
+        {activeTab !== "on-board" && (
+          <ScrollArea className="h-[calc(100vh-65px)] w-[70%] shadow-2xl bg-slate-100 ">
+            <SOWPreview data={watchedValues as StatementOfWorkRequest} />
+          </ScrollArea>
+        )}
+      </div>
+    </ScrollArea>
   );
 }

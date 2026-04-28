@@ -178,3 +178,16 @@
   }
 }
 
+.page {
+  width: 656.84px;
+  min-height: 849.6px;
+  padding: 100px 46px;
+
+  overflow: hidden; /* keep */
+}
+
+.page-content {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
