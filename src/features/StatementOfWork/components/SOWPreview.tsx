@@ -3,17 +3,16 @@ import DocumentBackground from "@/core/presentation/assets/DocumentBacgkround.pn
 import ReactDOM from "react-dom/client";
 import { type ReactNode, useMemo, } from "react";
 import { formatDate } from "@/core/helpers/formatDate";
-
+import ScrumDiagram from "@/core/presentation/assets/ScrumDiagram.png";
 interface SOWPreviewProps {
   data: StatementOfWorkRequest;
 }
 
 export default function SOWPreview({ data }: SOWPreviewProps) {
-
   const blocks = [
     // PAGE 1 CONTENT
     [
-      <div className="flex items-start justify-center w-full h-full flex-col -translate-y-20">
+      <div className="flex items-start justify-center w-full h-full flex-col mt-50">
         <h1 className="text-[138px] leading-37.5 font-bold text-blue-800">SOW</h1>
         <h2 className="text-muted-foreground text-[23.3327px]">{data.project_name ?? ""}</h2>
         <p className="text-muted-foreground mt-10  text-[23.3327px]">Date: {data.submission_date ? formatDate(data.submission_date, "long") : ""}</p>
@@ -63,6 +62,47 @@ export default function SOWPreview({ data }: SOWPreviewProps) {
             </li>
           )) ?? null}
         </ul>
+      </div>,
+    ],
+    [
+      <div className="flex flex-col gap-5">
+        <div>
+          <h2 className="font-semibold text-[13.9996px]">Geographical Scope</h2>
+          <p>Scope of Work will only cover project support for the following countries: </p>
+          <ul className="list-disc ml-6">{data.countries?.map((c, i) => <li key={i}>{c.detail}</li>) ?? null}</ul>
+        </div>
+        <div>
+          <h2 className="font-semibold text-[13.9996px]">Project Approach</h2>
+
+          <p>
+            The team will be using the Scrum Agile approach. Please refer to the figure below. OPSOLUTIONS is using scrum methodology for managing
+            software delivery. Scrum is a methodology used by the organization to break down requirements into manageable chunks by collaborating and
+            communicating both with the people who are doing the work and the people who need the work done.
+          </p>
+          <p className="my-5">Scrum Agile Approach diagram:</p>
+          <img src={ScrumDiagram} className="w-[3.66in] h-[1.67in] mx-auto" />
+          <p>Scrum Project Management Activities: </p>
+          <ul className="pl-10 list-disc">
+            <li>
+              Sprint Planning Meeting – This is where the scrum team discusses the work that will be done per sprint. The product backlog is being
+              created containing the level of priorities of each task.
+            </li>
+            <li>
+              Daily Scrum or Daily Stand-up – This occurs every day wherein the team gathers to discuss what they have done yesterday, what they are
+              currently working on and what is their next task.
+            </li>
+            <li>Sprint Review – At the end of every sprint, the scrum team discusses what they have and have not accomplished during the sprint.</li>
+            <li>
+              Sprint Demo – This is where the completed product backlog items are demonstrated with the goal of promoting an information discussion
+              between the Scrum Team and Sprint Review participants.
+            </li>
+            <li>
+              Sprint Retrospective – This is where the team gathers and discusses what they have learned, the challenges they have experienced, and
+              the things that they should work on to improve their next sprint.
+            </li>
+            <li>Backlog Refinement – This is where the team discusses the list of items and tasks that aim to be covered by the next sprint.</li>
+          </ul>
+        </div>
       </div>,
     ],
   ];
