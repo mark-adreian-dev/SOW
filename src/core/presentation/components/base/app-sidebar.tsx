@@ -16,19 +16,13 @@ import {
 } from "@/core/presentation/components/base/ui/sidebar";
 import { Link } from "react-router-dom";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "./ui/collapsible";
-import { Button } from "./ui/button";
 
-// This is sample data.
 const data = {
   navMain: [
     {
       title: "Statement of Work",
       url: "#",
       items: [
-        {
-          title: "Acknowledgement",
-          url: "#",
-        },
         {
           title: "Project Information",
           url: "#",
@@ -39,6 +33,10 @@ const data = {
         },
         {
           title: "Timelines",
+          url: "#",
+        },
+        {
+          title: "Acknowledgement",
           url: "#",
         },
       ],

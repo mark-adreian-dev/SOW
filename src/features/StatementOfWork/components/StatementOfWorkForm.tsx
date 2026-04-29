@@ -42,8 +42,8 @@ export default function StatementOfWorkForm({ form }: StatementOfWorkFormProps) 
   return (
     <ScrollArea className="flex h-[calc(100vh-65px)]">
       <div className="flex gap-5 pr-2">
-        <ScrollArea className="h-[calc(100vh-65px)] w-full shadow-2xl bg-slate-100 pr-4">
-          <div className="w-full p-12 pr-0">
+        <ScrollArea className="h-[calc(100vh-65px)] w-full shadow-2xl pr-4">
+          <div className={`w-full ${activeTab !== "on-board" ? "p-12" : "p-0"} pr-0`}>
             {activeTab !== "on-board" && <Progress value={progressValue} className="mb-5 h-2" />}
 
             <Form<StatementOfWorkRequest> form={form} onSubmit={handleSubmit} formID="contract-form">

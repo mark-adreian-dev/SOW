@@ -1,15 +1,17 @@
 import { Button } from "@/core/presentation/components/base/ui/button";
 import { ArrowLeft, DownloadIcon } from "lucide-react";
-
+import DownloadImageBanner from "@/features/StatementOfWork/assets/FileDownloadImageBaner.png";
 interface AcknowledgementFormProps {
   navigateToPrevForm: () => void;
 }
 
 export default function SOWDownloadForm({ navigateToPrevForm }: AcknowledgementFormProps) {
   return (
-    <div className="flex w-full h-full items-center justify-center py-20">
+    <div className="flex w-full h-full items-center justify-center mt-15">
       <div className="max-w-100 text-center flex flex-col gap-5 items-center justify-center">
-        <div className="w-100 h-100 bg-primary"></div>
+        <div className="w-80 h-80">
+          <img src={DownloadImageBanner} className="object-contain" />
+        </div>
         <h1 className="text-4xl font-bold text-primary">Statement of Work is Ready!</h1>
         <p className="text-lg">Your Statement of Work has been successfully prepared and is now ready for download.</p>
 

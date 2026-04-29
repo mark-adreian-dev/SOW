@@ -120,10 +120,20 @@ export default function SOWApplicationPlatformForm({ form, navigateToNextForm, n
         </Empty>
       )}
 
+      <div>
+        {platformFields.map((platform, index) => (
+          <PlatformItem key={platform.id} control={control} form={form} platformIndex={index} removePlatform={removePlatform} />
+        ))}
+
+        {platformFields.length > 0 && (
+          <Button type="button" variant={"outline"} className="w-full self-end mt-15 border-primary hover:bg-primary" onClick={handleAddPlatform}>
+            <PlusIcon />
+            Add Platform
+          </Button>
+        )}
+      </div>
       {/* PLATFORM LIST */}
-      {platformFields.map((platform, index) => (
-        <PlatformItem key={platform.id} control={control} form={form} platformIndex={index} removePlatform={removePlatform} />
-      ))}
+
       {platformFields.length > 0 && (
         <div className="self-end flex gap-4 items-center">
           <Button type="button" variant={"outline"} className="w-fit self-end mt-10" onClick={navigateToPrevForm}>
