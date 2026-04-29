@@ -5,10 +5,10 @@ export type DateFormatType = "default" | "short" | "long" | "time" | "datetime" 
 /**
  * Format date using predefined formats
  */
-export function formatDate(dateInput: Date | string | number, type: DateFormatType = "default"): string {
+export function formatDate(dateInput: Date | string | number, type: DateFormatType = "default"): string | undefined {
   const date = new Date(dateInput);
 
-  if (isNaN(date.getTime())) return "Invalid date";
+  if (isNaN(date.getTime())) return undefined;
 
   const formats: Record<DateFormatType, string> = {
     default: "yyyy-MM-dd",

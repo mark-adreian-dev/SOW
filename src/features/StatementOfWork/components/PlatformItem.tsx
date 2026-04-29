@@ -31,7 +31,7 @@ export function PlatformItem({ control, form, platformIndex, removePlatform }: P
 
   const addModule = () => {
     prependModule({
-      feature_index: Date.now(),
+      feature_index: featureFields.length + 1,
       feature_name: "",
       description: "",
       feature_obj: "",

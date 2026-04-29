@@ -11,6 +11,16 @@ interface SOWPreviewProps {
 }
 
 export default function SOWPreview({ data }: SOWPreviewProps) {
+  const totals = data.applicationPlatformRequirements.reduce(
+    (acc, platform) => {
+      platform.features?.forEach((f) => {
+        acc.dev += f.dev_story_points ?? 0;
+        acc.test += f.test_story_points ?? 0;
+      });
+      return acc;
+    },
+    { dev: 0, test: 0 }
+  );
   const blocks = [
     // PAGE 1
     [
@@ -121,10 +131,11 @@ export default function SOWPreview({ data }: SOWPreviewProps) {
       <div className="text-[10.9996px]">
         <h2 className="font-semibold mb-4">General Specification</h2>
         <p className="mb-5">
-          Enterprise Procurement Management System will be available for Web Browsers and Mobile phones . The system will be a fully responsive
-          web-based procurement management platform supported by a companion mobile application, designed to handle procurement planning, approvals,
-          reporting, and document generation. It will include role-based access control, audit trails, exportable reports, and integration-ready APIs
-          for future system expansion.
+          Enterprise Procurement Management System will be available for{" "}
+          {`${data.isPlatformDesktop && data.isPlatformMobile ? " Web Browsers and Mobile phones" : data.isPlatformDesktop ? " Web Browsers" : data.isPlatformMobile ? " Mobile phones" : " "}`}
+          . The system will be a fully responsive web-based procurement management platform supported by a companion mobile application, designed to
+          handle procurement planning, approvals, reporting, and document generation. It will include role-based access control, audit trails,
+          exportable reports, and integration-ready APIs for future system expansion.
         </p>
 
         <p>Here are some of the supported/targeted specifications:</p>
@@ -158,7 +169,7 @@ export default function SOWPreview({ data }: SOWPreviewProps) {
 
                   <TableBody className="border text-[10.9996px]">
                     <TableRow key={platform.application_platform_index ?? pIndex}>
-                      <TableCell className="w-45 h-fit border">{platform.name}</TableCell>
+                      <TableCell className="w-45 h-fit border wrap-break-word whitespace-pre-wrap">{platform.name}</TableCell>
                       <TableCell className="h-fit">
                         <ul className="list-disc ml-6">{platform.features?.map((f) => <li key={f.feature_index}>{f.feature_name}</li>) ?? null}</ul>
                       </TableCell>
@@ -181,7 +192,7 @@ export default function SOWPreview({ data }: SOWPreviewProps) {
           return (
             <div key={platform.application_platform_index ?? pIndex}>
               <h1 className="text-[13.9995px] font-bold text-primary">
-                {pIndex + 1}.{platform.name}
+                {platform.application_platform_index}.{platform.name}
               </h1>
               <Table className="w-full table-fixed border-foreground">
                 <TableBody className="border-foreground text-[10.9996px]">
@@ -200,7 +211,7 @@ export default function SOWPreview({ data }: SOWPreviewProps) {
 
                         <TableRow className="border-y border-foreground">
                           <TableCell className="border-r border-foreground w-30 align-top wrap-break-word whitespace-pre-wrap">
-                            {pIndex + 1}.{fIndex + 1} Requirements
+                            {platform.application_platform_index}.{f.feature_index} Requirements
                           </TableCell>
                           <TableCell className="align-top wrap-break-word whitespace-pre-wrap">{f.feature_name} feature</TableCell>
                         </TableRow>
@@ -265,34 +276,131 @@ export default function SOWPreview({ data }: SOWPreviewProps) {
 
     //PAGE 9
     [
-      <div>
+      <div className="mt-5 flex flex-col gap-5">
         <Table className="w-full table-fixed">
           <TableHeader className="bg-primary text-foreground">
             <TableRow>
-              <TableHead className="py-1 wrap-break-word whitespace-normal text-center">No.</TableHead>
-              <TableHead className="py-1 wrap-break-word whitespace-normal text-center">Improvent/Task</TableHead>
-              <TableHead className="py-1 wrap-break-word whitespace-normal text-center">Development Story Points</TableHead>
-              <TableHead className="py-1 wrap-break-word whitespace-normal text-center">Testing Story Points</TableHead>
+              <TableHead className="py-1 text-center w-10 wrap-break-word whitespace-normal">No.</TableHead>
+
+              <TableHead className="py-1 text-center w-55 wrap-break-word whitespace-normal">Improvement / Task</TableHead>
+
+              <TableHead className="py-1 text-center w-22.5 wrap-break-word whitespace-normal">Development Story Points</TableHead>
+
+              <TableHead className="py-1 text-center w-22.5 wrap-break-word whitespace-normal">Testing Story Points</TableHead>
             </TableRow>
           </TableHeader>
 
           <TableBody className="border">
             {data.applicationPlatformRequirements.map((item, platformIndex) =>
               item.features.map((feature, featureIndex) => {
-                if (feature.feature_name === "Project Team Components") {
-                  return (
-                    <TableRow key={`${platformIndex}-${featureIndex}`}>
-                      <TableCell className="wrap-break-word">
-                        {item.application_platform_index}.{feature.feature_index}
-                      </TableCell>
-                      <TableCell className="wrap-break-word">{feature.feature_name}</TableCell>
-                    </TableRow>
-                  );
-                }
+                return (
+                  <TableRow key={`${platformIndex}-${featureIndex}`}>
+                    <TableCell className="py-1 border-r wrap-break-word whitespace-pre-wrap text-center">
+                      {platformIndex + 1}.{featureIndex + 1}
+                    </TableCell>
+
+                    <TableCell className="py-1 border-r wrap-break-word whitespace-pre-wrap">{feature.feature_name}</TableCell>
+
+                    <TableCell className="py-1 border-r text-center wrap-break-word">{feature.dev_story_points ?? "-"}</TableCell>
+
+                    <TableCell className="py-1 border-r text-center wrap-break-word">{feature.test_story_points ?? "-"}</TableCell>
+                  </TableRow>
+                );
               })
             )}
+            <TableRow>
+              <TableCell className="bg-gray-300 py-1 wrap-break-word whitespace-pre-wrap text-center"></TableCell>
+              <TableCell className="bg-gray-300 py-1 font-bold border-r wrap-break-word whitespace-pre-wrap text-end">TOTAL STORY POINTS</TableCell>
+              <TableCell className="py-1 border-r text-center wrap-break-word">{totals.dev}</TableCell>
+              <TableCell className="py-1 border-r text-center wrap-break-word">{totals.test}</TableCell>
+            </TableRow>
           </TableBody>
         </Table>
+
+        <Table className="w-full table-fixed">
+          <TableHeader className="bg-primary text-foreground">
+            <TableRow>
+              <TableHead className="py-1 text-center w-[40%] wrap-break-word whitespace-normal">Sprint Events</TableHead>
+              <TableHead className="py-1 text-center w-full wrap-break-word whitespace-normal">Dates</TableHead>
+            </TableRow>
+          </TableHeader>
+
+          <TableBody className="border">
+            <TableRow>
+              <TableCell className="border py-1 wrap-break-word whitespace-pre-wrap text-center">Development Dates</TableCell>
+              <TableCell className="py-1 wrap-break-word whitespace-pre-wrap text-center">
+                {formatDate(data.development_start_date, "long") ?? ""} - {formatDate(data.development_end_date, "long") ?? ""}
+              </TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell className="border py-1 wrap-break-word whitespace-pre-wrap text-center">Testing Dates</TableCell>
+              <TableCell className="py-1 wrap-break-word whitespace-pre-wrap text-center">
+                {formatDate(data.testing_start_date, "long") ?? ""} - {formatDate(data.testing_end_date, "long") ?? ""}
+              </TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell className="border py-1 wrap-break-word whitespace-pre-wrap text-center">Beta/ UAT Release</TableCell>
+              <TableCell className="py-1 wrap-break-word whitespace-pre-wrap text-center">
+                {formatDate(data.uat_release_date, "long") ?? ""}
+              </TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell className="border py-1 wrap-break-word whitespace-pre-wrap text-center">Production Release</TableCell>
+              <TableCell className="py-1 wrap-break-word whitespace-pre-wrap text-center">
+                {formatDate(data.prod_release_date, "long") ?? ""}
+              </TableCell>
+            </TableRow>
+          </TableBody>
+        </Table>
+      </div>,
+    ],
+    //PAGE 10
+    [
+      <div className="text-[10.9996px]">
+        <h2 className="text-[19.9994px] font-semibold mb-5">Acceptance</h2>
+        <p className="mb-4">
+          I accept and approve this Statement of Work for the development of {data.project_name}. Note: This Statement of Work covers only the
+          specified requirements above. Should there be additional requirements required by {data.client_name} which is not part of the Approved
+          Statement of Work, OPSOLUTIONS shall conduct an assessment and evaluation of the effort involved in developing these newly specified
+          requirements and evaluate the impact to the project timeline.
+        </p>
+        <h2 className="font-semibold mb-4 text-[13.9996px]">Accepted by:</h2>
+        <Table className="w-full table-fixed">
+          <TableHeader className="bg-gray-300 text-foreground">
+            <TableRow>
+              <TableHead className="text-xs h-fit py-1 border border-foreground text-center w-full wrap-break-word whitespace-normal">Name</TableHead>
+              <TableHead className="text-xs h-fit py-1 border border-foreground text-center w-full wrap-break-word whitespace-normal">
+                Designation
+              </TableHead>
+              <TableHead className="text-xs h-fit py-1 border border-foreground text-center w-full wrap-break-word whitespace-normal">
+                Signature
+              </TableHead>
+              <TableHead className="text-xs h-fit py-1 border border-foreground text-center w-full wrap-break-word whitespace-normal">Date</TableHead>
+            </TableRow>
+          </TableHeader>
+
+          <TableBody className="border">
+            <TableRow>
+              <TableCell className="h-5 py-1 wrap-break-word border-foreground border whitespace-pre-wrap text-center"></TableCell>
+              <TableCell className="h-5 py-1 wrap-break-word border-foreground border whitespace-pre-wrap text-center"></TableCell>
+              <TableCell className="h-5 py-1 wrap-break-word border-foreground border whitespace-pre-wrap text-center"></TableCell>
+              <TableCell className="h-5 py-1 wrap-break-word border-foreground border whitespace-pre-wrap text-center"></TableCell>
+            </TableRow>
+          </TableBody>
+        </Table>
+        <div className="flex flex-col items-center justify-center gap-10 mt-15">
+          <h2 className="font-semibold mb-4 text-[13.9996px]">Accepted by:</h2>
+          <div className="text-center">
+            <p className="text-[14px]">{data.prepared_by}</p>
+            <p className="text-[14px]">OPSOLUTIONS - {data.prepared_by_position}</p>
+          </div>
+
+          <h2 className="font-semibold mb-4 text-[13.9996px]">Noted by:</h2>
+          <div className="text-center">
+            <p className="text-[14px]">{data.noted_by}</p>
+            <p className="text-[14px]">OPSOLUTIONS - {data.noted_by_position}</p>
+          </div>
+        </div>
       </div>,
     ],
   ];
@@ -533,28 +641,29 @@ function ProjectTeamTable({ isWebPlatform, isMobilePlatform }: ProjectTeamTableP
   return (
     <div className="text-[10.9996px] mt-5">
       <h2 className="text-[14.9994px] font-semibold mb-4">Project Team Components</h2>
-
-      <Table className="w-full table-fixed">
-        <TableHeader className="bg-primary text-foreground">
-          <TableRow>
-            <TableHead className="py-1 wrap-break-word whitespace-normal text-center">Role</TableHead>
-            <TableHead className="py-1 wrap-break-word whitespace-normal text-center">Number of Resources</TableHead>
-            <TableHead className="py-1 wrap-break-word whitespace-normal text-center">Working Days Required</TableHead>
-            <TableHead className="py-1 wrap-break-word whitespace-normal text-center">Amount</TableHead>
-          </TableRow>
-        </TableHeader>
-
-        <TableBody className="border">
-          {filteredTeam.map((item, index) => (
-            <TableRow key={index}>
-              <TableCell className="py-0 text-center border-r wrap-break-word whitespace-pre-wrap">{item.role}</TableCell>
-              <TableCell className="py-0 text-center border-r">1</TableCell>
-              <TableCell className="py-0 text-center border-r"></TableCell>
-              <TableCell className="py-0 text-center border-r"></TableCell>
+      {(isWebPlatform || isMobilePlatform) && (
+        <Table className="w-full table-fixed">
+          <TableHeader className="bg-primary text-foreground">
+            <TableRow>
+              <TableHead className="py-1 wrap-break-word whitespace-normal text-center">Role</TableHead>
+              <TableHead className="py-1 wrap-break-word whitespace-normal text-center">Number of Resources</TableHead>
+              <TableHead className="py-1 wrap-break-word whitespace-normal text-center">Working Days Required</TableHead>
+              <TableHead className="py-1 wrap-break-word whitespace-normal text-center">Amount</TableHead>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+          </TableHeader>
+
+          <TableBody className="border">
+            {filteredTeam.map((item, index) => (
+              <TableRow key={index}>
+                <TableCell className="py-0 text-center border-r wrap-break-word whitespace-pre-wrap">{item.role}</TableCell>
+                <TableCell className="py-0 text-center border-r">1</TableCell>
+                <TableCell className="py-0 text-center border-r"></TableCell>
+                <TableCell className="py-0 text-center border-r"></TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      )}
     </div>
   );
 }

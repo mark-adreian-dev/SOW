@@ -31,7 +31,7 @@ export default function SOWApplicationPlatformForm({ form, navigateToNextForm, n
 
   const handleAddPlatform = () => {
     appendPlatform({
-      application_platform_index: Date.now(), // ✅ safer than length
+      application_platform_index: platformFields.length + 1, // ✅ safer than length
       name: "",
       features: [],
     });
@@ -121,9 +121,11 @@ export default function SOWApplicationPlatformForm({ form, navigateToNextForm, n
       )}
 
       <div>
-        {platformFields.map((platform, index) => (
-          <PlatformItem key={platform.id} control={control} form={form} platformIndex={index} removePlatform={removePlatform} />
-        ))}
+        <div className="flex flex-col gap-5">
+          {platformFields.map((platform, index) => (
+            <PlatformItem key={platform.id} control={control} form={form} platformIndex={index} removePlatform={removePlatform} />
+          ))}
+        </div>
 
         {platformFields.length > 0 && (
           <Button type="button" variant={"outline"} className="w-full self-end mt-15 border-primary hover:bg-primary" onClick={handleAddPlatform}>

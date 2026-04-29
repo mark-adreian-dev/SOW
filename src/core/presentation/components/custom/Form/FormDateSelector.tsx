@@ -30,7 +30,13 @@ export default function FormDateSelector<T extends FieldValues>({
   allowFutureDates,
 }: FormDateSelectorProps<T>) {
   const [open, setOpen] = useState(false);
+  const today = new Date();
 
+  const maxFutureDate = new Date();
+  maxFutureDate.setFullYear(today.getFullYear() + 10);
+
+  const minYear = 1900;
+  const maxYear = maxFutureDate.getFullYear();
   return (
     <Controller
       name={name}
@@ -68,14 +74,17 @@ export default function FormDateSelector<T extends FieldValues>({
                 <PopoverContent className="w-auto p-0" align="start" onPointerDownOutside={(e) => e.preventDefault()}>
                   <Calendar
                     mode="single"
+                    className="rounded-md"
                     captionLayout="dropdown"
+                    fromYear={minYear}
+                    toYear={maxYear}
                     selected={dateValue ?? undefined}
                     onSelect={(date) => {
                       field.onChange(date);
                       form.trigger(name);
                       setOpen(false);
                     }}
-                    disabled={(date) => date < new Date("1900-01-01") || (!allowFutureDates && date > new Date())}
+                    disabled={(date) => date < new Date("1900-01-01") || (!allowFutureDates && date > maxFutureDate)}
                   />
                 </PopoverContent>
               </Popover>

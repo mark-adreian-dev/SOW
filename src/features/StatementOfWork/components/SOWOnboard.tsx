@@ -19,7 +19,7 @@ export default function SOWOnboard({ navigateToNextForm }: SOWOnboardProps) {
       {/* CTA */}
       <div className="mt-10">
         <Button size="lg" className="rounded-full px-6 py-5 text-base flex items-center gap-2" onClick={navigateToNextForm}>
-          Start Creating <PlusIcon className="w-4 h-4" />
+          Create SOW <PlusIcon className="w-4 h-4" />
         </Button>
       </div>
     </div>
