@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Controller } from "react-hook-form";
-import type { Control, FieldValues, Path, UseFormReturn } from "react-hook-form";
+import type { FieldValues, Path, UseFormReturn } from "react-hook-form";
 import { Field, FieldDescription, FieldError, FieldLabel } from "@/core/presentation/components/base/ui/field";
 import { Button } from "@/core/presentation/components/base/ui/button";
 import { Calendar } from "@/core/presentation/components/base/ui/calendar";

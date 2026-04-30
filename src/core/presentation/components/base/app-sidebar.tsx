@@ -1,5 +1,5 @@
 import * as React from "react";
-import { ChevronDown, FileSignatureIcon, GalleryVerticalEnd } from "lucide-react";
+import { ChevronDown, FileSignatureIcon } from "lucide-react";
 
 import {
   Sidebar,

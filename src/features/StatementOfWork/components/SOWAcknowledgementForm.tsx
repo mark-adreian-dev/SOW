@@ -3,7 +3,7 @@ import { Button } from "@/core/presentation/components/base/ui/button";
 import FormTextInput from "@/core/presentation/components/custom/Form/FormTextInput";
 import FormTitle from "@/core/presentation/components/shared/FormTitle";
 import { useStepValidation } from "@/core/presentation/hooks/useStepValidation";
-import { ArrowLeft, DownloadIcon } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import type { UseFormReturn } from "react-hook-form";
 
 interface AcknowledgementFormProps {

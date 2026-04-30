@@ -5,7 +5,7 @@ import React, { type ReactNode, useMemo } from "react";
 import { formatDate } from "@/core/helpers/formatDate";
 import ScrumDiagram from "@/core/presentation/assets/ScrumDiagram.png";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/core/presentation/components/base/ui/table";
-import { Tab } from "docx";
+
 interface SOWPreviewProps {
   data: StatementOfWorkRequest;
 }
@@ -196,7 +196,7 @@ export default function SOWPreview({ data }: SOWPreviewProps) {
               </h1>
               <Table className="w-full table-fixed border-foreground">
                 <TableBody className="border-foreground text-[10.9996px]">
-                  {platform.features?.map((f, fIndex) => {
+                  {platform.features?.map((f) => {
                     return (
                       <React.Fragment key={f.feature_index}>
                         <TableRow className="border-y border-foreground">

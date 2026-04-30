@@ -1,5 +1,5 @@
 import { Controller } from "react-hook-form";
-import type { Control, FieldValues, Path, UseFormReturn } from "react-hook-form";
+import type { FieldValues, Path, UseFormReturn } from "react-hook-form";
 
 import { Field, FieldDescription, FieldLabel } from "@/core/presentation/components/base/ui/field";
 import { type LucideIcon } from "lucide-react";
@@ -30,7 +30,7 @@ export default function FormSwitchInput<T extends FieldValues>({
       name={name}
       control={form.control}
       defaultValue={false as any} // ensures boolean default
-      render={({ field, fieldState }) => (
+      render={({ field }) => (
         <Field className={cn("w-full flex items-center justify-between", className)}>
           <div className="flex flex-row-reverse justify-end gap-5  w-full">
             {/* Left side: Label + Description */}
